@@ -74,7 +74,7 @@ public class AdminController {
 
 		LocalDate curDate = LocalDate.now();
 
-		List<User> users = userService.findAll();
+		List<User> users = userService.findByRoleNot(Role.ADMIN);
 		users.forEach( user -> {
 			user.setAge(Period.between(user.getDateOfBirth(), curDate).getYears());
 		});
