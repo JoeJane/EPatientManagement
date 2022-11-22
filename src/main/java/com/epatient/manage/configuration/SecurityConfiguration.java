@@ -51,10 +51,9 @@ public class SecurityConfiguration {
 
         http.authorizeRequests()
                 // URL matching for accessibility
-                // .antMatchers("/", "/login", "/register", "/**").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/admin/**").hasAnyAuthority("ADMIN")
-                // .antMatchers("/account/**").hasAnyAuthority("ACCOUNTANT")
+                // .antMatchers("/doctor/**").hasAnyAuthority("DOCTOR")
                 .anyRequest().authenticated()
                 .and()
                 // form login

@@ -39,13 +39,15 @@ public class AdminController {
 		users.forEach( user -> {
 			user.setAge(Period.between(user.getDateOfBirth(), curDate).getYears());
 		});
+		
 
-		User currentUser  = ((User)((UsernamePasswordAuthenticationToken) principal).getPrincipal());
+		User currentUser  = (User)((UsernamePasswordAuthenticationToken) principal).getPrincipal();
 
 		model.addAttribute("searchterm", new SearchTerm());
 		model.addAttribute("bulkAction", new SearchTerm());
 		model.addAttribute("users", users);
 		model.addAttribute("message", "Welcome " + currentUser.getFullName());
+		
 		return "/admin/home";
 	}
 

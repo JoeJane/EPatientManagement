@@ -26,7 +26,7 @@
 <!-- ======= Header ======= -->
 <header id="header" class="header fixed-top d-flex align-items-center">
     <div class="d-flex align-items-center justify-content-between">
-        <a href="index.html" class="logo d-flex align-items-center">
+        <a href="/admin/home" class="logo d-flex align-items-center">
             <img src="/resources/images/logo.png" alt="">
             <span class="d-none d-lg-block">E-Patient</span>
         </a>
@@ -65,12 +65,6 @@
                     </li>
                     <li>
                         <hr class="dropdown-divider">
-                    </li>
-                    <li>
-                        <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
-                            <i class="fa-regular fa-circle-question"></i>
-                            <span>Need Help?</span>
-                        </a>
                     </li>
                     <li>
                         <hr class="dropdown-divider">

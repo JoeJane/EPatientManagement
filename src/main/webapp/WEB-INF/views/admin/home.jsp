@@ -9,7 +9,7 @@
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div class="d-block mb-4 mb-md-0">
             <h2 class="h4">Users List</h2>
-            <p class="mb-0">Your web analytics dashboard template.</p></div>
+            </div>
         <div class="btn-toolbar mb-2 mb-md-0">
             <a href="/admin/users/add" class="btn btn-sm btn-gray-800 d-inline-flex align-items-center">
                 <i class="fa-solid fa-plus"></i>&nbsp;&nbsp;New User</a>
