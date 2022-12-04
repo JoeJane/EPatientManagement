@@ -30,10 +30,10 @@ a:hover {
 }
 
 .hide {
-    display: none;
+    display: none !important;
 }
 .show {
-    display: block;
+    display: block !important;
 }
 .invalid{
     color: red !important;
@@ -1360,4 +1360,8 @@ h6 {
 
 :invalid~.invalid-feedback{
     display: block;
+}
+
+.date-badge{
+    font-size: 0.9em !important;
 }

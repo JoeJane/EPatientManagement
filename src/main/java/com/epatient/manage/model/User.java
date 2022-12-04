@@ -19,7 +19,8 @@ import java.util.Collections;
 
 @Entity
 @Table(name = "users")
-public class User implements UserDetails {
+@Inheritance(strategy=InheritanceType.JOINED)
+public class User <T> implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,7 +40,6 @@ public class User implements UserDetails {
     @Size(min = 4, message = "Password should be at least 3 characters long")
     @Column(name = "password")
     private String password;
-
 
     @Transient
     private String confirmPassword;
@@ -81,11 +81,6 @@ public class User implements UserDetails {
     @Column(name = "gender")
     private String gender;
 
-    @Enumerated(EnumType.STRING)
-    @NotNull(message = "Blood group is mandatory")
-    @Column(name = "blood_group")
-    private BloodGroup bloodGroup;
-
     @NotBlank(message = "Phone Number is mandatory")
     @Column(name = "phone_number")
     private String phoneNumber;
@@ -98,11 +93,6 @@ public class User implements UserDetails {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @NotNull(message = "Role is mandatory")
-    @Enumerated(EnumType.STRING)
-    @Column(name = "role")
-    private Role role;
-
     @Column(name = "deleted")
     private Boolean deleted = false;
 
@@ -111,24 +101,30 @@ public class User implements UserDetails {
     @Column(name = "dob")
     private LocalDate dateOfBirth;
 
-    @NotBlank(message = "Emergency first name cannot be empty")
-    @Column(name = "emergency_first_name")
-    private String emergencyFirstName;
-
-    @NotBlank(message = "Emergency last name cannot be empty")
-    @Column(name = "emergency_last_name")
-    private String emergencyLastName;
-
-    @NotBlank(message = "Emergency email cannot be empty")
-    @Column(name = "emergency_email")
-    private String emergencyEmail;
-
-    @NotBlank(message = "Emergency phone number cannot be empty")
-    @Column(name = "emergency_phone_number")
-    private String emergencyPhone;
-
     @Transient
     private Integer age;
+
+    @NotNull(message = "Role is mandatory")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
+    private Role role;
+
+    @Transient
+    private DoctorSpeciality speciality;
+    @Transient
+    private BloodGroup bloodGroup;
+    @Transient
+    private LocalDateTime upComingAppointment;
+    @Transient
+    private String emergencyFirstName;
+    @Transient
+    private String emergencyLastName;
+    @Transient
+    private String emergencyEmail;
+    @Transient
+    private String emergencyPhone;
+    @Transient
+    private NurseType nurseType;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -177,7 +173,7 @@ public class User implements UserDetails {
     }
 
     public void setUsername(String username) {
-        this.username = username;
+        this.username = username.toLowerCase();
     }
 
     @Override
@@ -253,14 +249,6 @@ public class User implements UserDetails {
         this.gender = gender;
     }
 
-    public BloodGroup getBloodGroup() {
-        return bloodGroup;
-    }
-
-    public void setBloodGroup(BloodGroup bloodGroup) {
-        this.bloodGroup = bloodGroup;
-    }
-
     public String getCountry() {
         return country;
     }
@@ -277,52 +265,12 @@ public class User implements UserDetails {
         this.phoneNumber = phoneNumber;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
     public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
-    }
-
-    public String getEmergencyFirstName() {
-        return emergencyFirstName;
-    }
-
-    public void setEmergencyFirstName(String emergencyFirstName) {
-        this.emergencyFirstName = emergencyFirstName;
-    }
-
-    public String getEmergencyLastName() {
-        return emergencyLastName;
-    }
-
-    public void setEmergencyLastName(String emergencyLastName) {
-        this.emergencyLastName = emergencyLastName;
-    }
-
-    public String getEmergencyEmail() {
-        return emergencyEmail;
-    }
-
-    public void setEmergencyEmail(String emergencyEmail) {
-        this.emergencyEmail = emergencyEmail;
-    }
-
-    public String getEmergencyPhone() {
-        return emergencyPhone;
-    }
-
-    public void setEmergencyPhone(String emergencyPhone) {
-        this.emergencyPhone = emergencyPhone;
     }
 
     public Integer getAge() {
@@ -363,5 +311,77 @@ public class User implements UserDetails {
 
     public String getIcon() {
         return (firstName.charAt(0) + "" + lastName.charAt(0)).toUpperCase();
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public DoctorSpeciality getSpeciality() {
+        return speciality;
+    }
+
+    public void setSpeciality(DoctorSpeciality speciality) {
+        this.speciality = speciality;
+    }
+
+    public BloodGroup getBloodGroup() {
+        return bloodGroup;
+    }
+
+    public void setBloodGroup(BloodGroup bloodGroup) {
+        this.bloodGroup = bloodGroup;
+    }
+
+    public LocalDateTime getUpComingAppointment() {
+        return upComingAppointment;
+    }
+
+    public void setUpComingAppointment(LocalDateTime upComingAppointment) {
+        this.upComingAppointment = upComingAppointment;
+    }
+
+    public String getEmergencyFirstName() {
+        return emergencyFirstName;
+    }
+
+    public void setEmergencyFirstName(String emergencyFirstName) {
+        this.emergencyFirstName = emergencyFirstName;
+    }
+
+    public String getEmergencyLastName() {
+        return emergencyLastName;
+    }
+
+    public void setEmergencyLastName(String emergencyLastName) {
+        this.emergencyLastName = emergencyLastName;
+    }
+
+    public String getEmergencyEmail() {
+        return emergencyEmail;
+    }
+
+    public void setEmergencyEmail(String emergencyEmail) {
+        this.emergencyEmail = emergencyEmail;
+    }
+
+    public String getEmergencyPhone() {
+        return emergencyPhone;
+    }
+
+    public void setEmergencyPhone(String emergencyPhone) {
+        this.emergencyPhone = emergencyPhone;
+    }
+
+    public NurseType getNurseType() {
+        return nurseType;
+    }
+
+    public void setNurseType(NurseType nurseType) {
+        this.nurseType = nurseType;
     }
 }

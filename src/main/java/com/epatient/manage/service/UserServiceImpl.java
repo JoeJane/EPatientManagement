@@ -1,6 +1,8 @@
 package com.epatient.manage.service;
 
+import com.epatient.manage.model.Patient;
 import com.epatient.manage.model.Role;
+import com.epatient.manage.model.SearchTerm;
 import com.epatient.manage.model.User;
 import com.epatient.manage.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +12,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
@@ -34,26 +38,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userRepository.saveAll(users);
     }
 
-    @Override
-    public List<Object> isUserPresent(User user) {
-        boolean userExists = false;
-        String message = null;
-        Optional<User> existingUserEmail = userRepository.findByEmail(user.getEmail());
-        if (existingUserEmail.isPresent()) {
-            userExists = true;
-            message = "Email Already Present!";
-        }
-
-        if (existingUserEmail.isPresent()) {
-            message = "Email is Already Present!";
-        }
-        System.out.println("existingUserEmail.isPresent() - " + existingUserEmail.isPresent());
-        return Arrays.asList(userExists, message);
+    public Optional<User> findUserByUsername(String username){
+        return userRepository.findUserByUsername(username);
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException(String.format("USER_NOT_FOUND", username)));
+        return findUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException(String.format("USER_NOT_FOUND", username)));
     }
 
     @Override
@@ -72,6 +63,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    public List<User> findByRole(Role role){
+        return userRepository.findByRole(role);
+    }
+
+    @Override
     public void saveOrUpdate(User user) {
         Integer userId = user.getUserId();
         String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());
@@ -83,10 +79,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
             userTemp.setFirstName(user.getFirstName());
             userTemp.setLastName(user.getLastName());
-            userTemp.setRole(user.getRole());
+            // userTemp.setRole(user.getRole());
             userTemp.setDateOfBirth(user.getDateOfBirth());
             userTemp.setGender(user.getGender());
-            userTemp.setBloodGroup(user.getBloodGroup());
+            // userTemp.setBloodGroup(user.getBloodGroup());
             userTemp.setEmail(user.getEmail());
             userTemp.setPhoneNumber(user.getPhoneNumber());
             userTemp.setAddress(user.getAddress());
@@ -95,14 +91,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             userTemp.setProvince(user.getProvince());
             userTemp.setPostalCode(user.getPostalCode());
             userTemp.setCountry(user.getCountry());
-            userTemp.setEmergencyFirstName(user.getEmergencyFirstName());
+            /*userTemp.setEmergencyFirstName(user.getEmergencyFirstName());
             userTemp.setEmergencyLastName(user.getEmergencyLastName());
             userTemp.setEmergencyEmail(user.getEmergencyEmail());
-            userTemp.setEmergencyPhone(user.getEmergencyPhone());
+            userTemp.setEmergencyPhone(user.getEmergencyPhone());*/
             userTemp.setPassword(encodedPassword);
 
             userRepository.save(userTemp);
         } else {
+            user.setPassword(encodedPassword);
             userRepository.save(user);
         }
 
@@ -115,13 +112,26 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userRepository.save(user);
     }
 
+    public List<User> searchUsersForNurseRole(String term, String status) {
+        List<Role> roles = List.of(Role.PATIENT);
+        return search(term, status, roles);
+    }
 
-    public List<User> search(String term, String status) {
+    public List<User> searchUsersForAdminRole(SearchTerm searchTerm) {
+        List<Role> roles = null;
+        if(searchTerm.getRole() != null)
+            roles = List.of(searchTerm.getRole());
+        else
+            roles = Arrays.stream(Role.values()).filter(r -> r != Role.ADMIN).collect(Collectors.toList());
+        return search(searchTerm.getValue(), searchTerm.getStatus(), roles);
+    }
+
+    private List<User> search(String term, String status, List<Role> roles) {
         if (status.equals("1") || status.equals("2")) {
             boolean isDeleted = status.equals("1") ? false : true;
-            return userRepository.findUser(term, isDeleted);
+            return userRepository.findUser(term, isDeleted, roles);
         } else {
-            return userRepository.findUser(term);
+            return userRepository.findUser(term, roles);
         }
     }
 

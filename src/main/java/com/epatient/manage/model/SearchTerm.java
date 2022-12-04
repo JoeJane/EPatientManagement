@@ -4,6 +4,7 @@ public class SearchTerm {
     String value;
     String status;
     String []ids;
+    Role role;
 
     public SearchTerm(String value, String status){
         this.value = value;
@@ -39,5 +40,13 @@ public class SearchTerm {
 
     public void setIds(String[] ids) {
         this.ids = ids;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
