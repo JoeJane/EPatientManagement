@@ -11,7 +11,7 @@
             <h2 class="h4">Users List</h2>
             </div>
         <div class="btn-toolbar mb-2 mb-md-0">
-            <a href="/admin/users/add" class="btn btn-sm btn-gray-800 d-inline-flex align-items-center">
+            <a href="/admin/add" class="btn btn-sm btn-gray-800 d-inline-flex align-items-center">
                 <i class="fa-solid fa-plus"></i>&nbsp;&nbsp;New User</a>
         </div>
     </div>
@@ -25,6 +25,13 @@
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </span>
                         <form:input type="text" path="value" class="form-control" placeholder="Search users" />
+                    </div>
+                    <div class="input-group me-2 me-lg-3 fmxw-200">
+                        <form:select path="role" id="role"
+                                     class="form-select mb-0">
+                            <form:option value="" label="All"/>
+                            <form:options items="${roles}"/>
+                        </form:select>
                     </div>
                     <form:select class="form-select fmxw-200 d-none d-md-inline" path="status" aria-label="Message select example 2">
                         <form:option value="" label="All"/>
@@ -62,7 +69,6 @@
                 <th class="border-bottom">Role</th>
                 <th class="border-bottom">Gender</th>
                 <th class="border-bottom">Age</th>
-                <th class="border-bottom">BloodGroup</th>
                 <th class="border-bottom">Date Created</th>
                 <th class="border-bottom">Status</th>
                 <th class="border-bottom">Action</th>
@@ -91,7 +97,6 @@
                     <td><span class="fw-normal">${user.role.value}</span></td>
                     <td><span class="fw-normal">${user.gender}</span></td>
                     <td><span class="fw-normal">${user.age}</span></td>
-                    <td><span class="fw-normal">${user.bloodGroup.value}</span></td>
                     <td><span class="fw-normal">
                     <fmt:parseDate value="${user.createdAt}" pattern="yyyy-MM-dd" var="createdAt" type="date"/>
                     <fmt:formatDate pattern="MM/dd/yyy" value="${createdAt}"/></span></td>
@@ -113,9 +118,9 @@
                                     class="visually-hidden">Toggle Dropdown</span>
                             </button>
                             <div class="dropdown-menu dashboard-dropdown dropdown-menu-start mt-2 py-1">
-                                <a class="dropdown-item d-flex align-items-center" href="users/view/${user.userId}"><i class="fa-solid fa-eye"></i> View Details </a>
-                                <a class="dropdown-item d-flex align-items-center" href="users/edit/${user.userId}"><i class="fa-solid fa-pen-to-square"></i> Edit Details </a>
-                                <a class="dropdown-item d-flex align-items-center" href="users/resetPassword/${user.userId}"><i class="fa-solid fa-unlock"></i> Reset Password </a>
+                                <a class="dropdown-item d-flex align-items-center" href="view/${user.userId}"><i class="fa-solid fa-eye"></i> View Details </a>
+                                <a class="dropdown-item d-flex align-items-center" href="edit/${user.userId}"><i class="fa-solid fa-pen-to-square"></i> Edit Details </a>
+                                <a class="dropdown-item d-flex align-items-center" href="user/resetPassword/${user.userId}"><i class="fa-solid fa-unlock"></i> Reset Password </a>
                                 <c:choose>
                                     <c:when test="${user.deleted}">
                                         <a class="dropdown-item d-flex align-items-center activatebtn" href="#" id="${user.userId}" data-username="${user.username}" data-myid="${user.userId}"><i class="fa-solid fa-user-check text-success"></i> Activate</a>
@@ -211,7 +216,8 @@
 
 
     $('#close-btn').click(function (){
-        location.reload();
+        // location.reload();
+        window.location.href = "/admin/home";
     });
 
     $('#userCheck55').change(function (){

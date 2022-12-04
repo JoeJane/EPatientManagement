@@ -20,7 +20,7 @@
         <div class="row align-items-center">
             <div class="col">
                 <div class="mb-4 pt-4">
-                    <form:form method="post" modelAttribute="userForm" action="/admin/save">
+                    <form:form method="post" modelAttribute="userForm" action="/nurse">
 
                         <div class="row">
                             <div class="col-md-6 card mb-4">
@@ -59,7 +59,8 @@
 
                                         <c:if test="${userForm.role eq 'DOCTOR'}">
                                             <div class="col-md-6 mb-3">
-                                                <label for="speciality" class="form-label fw-bold mb-0">Doctor Speciality</label>
+                                                <label for="speciality" class="form-label fw-bold mb-0">Doctor
+                                                    Speciality</label>
                                                 <form:input path="speciality" type="text" id="speciality"
                                                             class="form-control-plaintext"/>
                                             </div>
@@ -67,7 +68,8 @@
 
                                         <c:if test="${userForm.role eq 'PATIENT'}">
                                             <div class="col-md-6 mb-3">
-                                                <label for="bloodGroup" class="form-label fw-bold mb-0">Blood Group</label>
+                                                <label for="bloodGroup" class="form-label fw-bold mb-0">Blood
+                                                    Group</label>
                                                 <form:input path="bloodGroup" type="text" id="bloodGroup"
                                                             class="form-control-plaintext"/>
                                             </div>
@@ -75,7 +77,8 @@
 
                                         <c:if test="${userForm.role eq 'NURSE'}">
                                             <div class="col-md-6 mb-3">
-                                                <label for="nurseType" class="form-label fw-bold mb-0">Nurse Type</label>
+                                                <label for="nurseType" class="form-label fw-bold mb-0">Nurse
+                                                    Type</label>
                                                 <form:input path="nurseType" type="text" id="nurseType"
                                                             class="form-control-plaintext"/>
                                             </div>
@@ -185,12 +188,14 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-md-6">
-                                                <label for="emergencyEmail" class="form-label fw-bold mb-0">Email</label>
+                                                <label for="emergencyEmail"
+                                                       class="form-label fw-bold mb-0">Email</label>
                                                 <form:input path="emergencyEmail" type="email" id="emergencyEmail"
                                                             class="form-control-plaintext"/>
                                             </div>
                                             <div class="col-md-6">
-                                                <label for="emergencyPhone" class="form-label fw-bold mb-0">Phone</label>
+                                                <label for="emergencyPhone"
+                                                       class="form-label fw-bold mb-0">Phone</label>
                                                 <form:input path="emergencyPhone" type="text" id="emergencyPhone"
                                                             class="form-control-plaintext"/>
                                             </div>
@@ -200,8 +205,44 @@
                             </div>
                         </c:if>
 
+                        <div class="row">
+                            <div class="card mb-4 col-md-12">
+                                <h5 class="card-header">Diagnosis Details</h5>
+                                <div class="card-body table-wrapper table-responsive">
+                                    <table class="table user-table table-hover align-items-center">
+                                        <thead>
+                                        <tr>
+                                            <th class="border-bottom">#</th>
+                                            <th class="border-bottom">Diagnosis</th>
+                                            <th class="border-bottom">Date</th>
+                                            <th class="border-bottom">Action</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <c:forEach var="diagnose" items="${diagnoses}" varStatus="loop">
+                                            <tr>
+                                                <td>${loop.index}</td>
+                                                <td>${diagnose.name}</td>
+                                                <td><fmt:parseDate value="${diagnose.createdAt}" pattern="yyyy-MM-dd"
+                                                                   var="createdAt" type="date"/>
+                                                    <fmt:formatDate pattern="MM/dd/yyy" value="${createdAt}"/>
+                                                </td>
+                                                <td>
+                                                    <a class="align-items-center"
+                                                       href="/nurse/patient/view-prescription/${diagnose.id}"
+                                                       title="View Prescription"><i
+                                                            class="fa-solid fa-capsules"></i></a>
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="float-end">
-                            <a href="/admin/home" class="fw-bold mx-2">Back</a>
+                            <a href="/nurse/home" class="fw-bold mx-2">Back</a>
                         </div>
                     </form:form>
                 </div>

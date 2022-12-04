@@ -26,7 +26,7 @@
 <!-- ======= Header ======= -->
 <header id="header" class="header fixed-top d-flex align-items-center">
     <div class="d-flex align-items-center justify-content-between">
-        <a href="/admin/home" class="logo d-flex align-items-center">
+        <a href="/nurse/home" class="logo d-flex align-items-center">
             <img src="/resources/images/logo.png" alt="">
             <span class="d-none d-lg-block">E-Patient</span>
         </a>
@@ -35,7 +35,7 @@
     <nav class="header-nav ms-auto">
         <ul class="d-flex align-items-center">
             <li class="nav-item dropdown">
-                <a class="nav-link nav-icon" href="/admin/home">
+                <a class="nav-link nav-icon" href="/nurse/home">
                     <i class="fa-solid fa-house"></i>
                 </a><!-- End Notification Icon -->
             </li><!-- End Notification Nav -->
@@ -58,17 +58,18 @@
                         <hr class="dropdown-divider">
                     </li>
                     <li>
-                        <a class="dropdown-item d-flex align-items-center" href="/admin/profile">
+                        <a class="dropdown-item d-flex align-items-center" href="/nurse/profile">
                             <i class="fa-regular fa-user"></i>
                             <span>My Profile</span>
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item d-flex align-items-center" href="/admin/resetPassword">
+                        <a class="dropdown-item d-flex align-items-center" href="/nurse/resetPassword">
                             <i class="fa-regular fa-user"></i>
                             <span>Change Password</span>
                         </a>
                     </li>
+
                     <li>
                         <a class="dropdown-item d-flex align-items-center" href="/logout">
                             <i class="fa-solid fa-arrow-right-from-bracket"></i>

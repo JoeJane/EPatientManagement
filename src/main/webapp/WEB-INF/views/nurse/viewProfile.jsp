@@ -20,15 +20,14 @@
         <div class="row align-items-center">
             <div class="col">
                 <div class="mb-4 pt-4">
-                    <form:form method="post" modelAttribute="userForm" action="/admin/save">
+                    <form:form method="post" modelAttribute="userForm" action="/nurse">
 
                         <div class="row">
                             <div class="col-md-6 card mb-4">
                                 <h5 class="card-header">Login information</h5>
                                 <div class="card-body">
                                     <label for="username" class="form-label fw-bold mb-0">Username</label>
-                                    <form:input path="username" type="text" id="username"
-                                                class="form-control-plaintext"/>
+                                    <form:input path="username" type="text" id="username" class="form-control-plaintext"/>
                                 </div>
                             </div>
                         </div>
@@ -41,8 +40,7 @@
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
                                             <label for="first_name" class="form-label fw-bold mb-0">First Name</label>
-                                            <form:input path="firstName" type="text" id="first_name"
-                                                        class="form-control-plaintext"/>
+                                            <form:input path="firstName" type="text" id="first_name" class="form-control-plaintext"/>
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label for="last_name" class="form-label fw-bold mb-0">Last Name</label>
@@ -201,7 +199,8 @@
                         </c:if>
 
                         <div class="float-end">
-                            <a href="/admin/home" class="fw-bold mx-2">Back</a>
+                            <a href="/nurse/home" class="fw-bold mx-2">Back</a>
+                            <a href="/nurse/edit" class="btn btn-sm btn-gray-800 d-inline-flex align-items-center">Edit</a>
                         </div>
                     </form:form>
                 </div>

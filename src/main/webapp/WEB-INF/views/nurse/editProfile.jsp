@@ -19,8 +19,9 @@
         <div class="row align-items-center">
             <div class="col">
                 <div class="mb-4 pt-4">
-                    <form:form method="post" modelAttribute="userForm" action="/admin/save">
+                    <form:form method="post" modelAttribute="userForm" action="/nurse/save">
                         <form:hidden path="userId"/>
+                        <form:hidden path="role"/>
                         <c:choose>
                             <c:when test="${userForm['new']}">
                                 <div class="row">
@@ -112,7 +113,7 @@
                                         <div class="col-md-6 mb-3">
                                             <spring:bind path="role">
                                                 <label for="role" class="form-label fw-bold">Role</label>
-                                                <form:select path="role" id="role"
+                                                <form:select path="role" id="role" disabled="true"
                                                              class="form-select mb-0 ${status.error ? 'is-invalid' : ''}"
                                                              aria-label="Select Role"
                                                              aria-describedby="validationRoleFeedback">
@@ -392,19 +393,10 @@
                         </div>
 
                         <div class="mt-3 float-end">
-                            <c:choose>
-                                <c:when test="${userForm['new']}">
-                                    <button class="btn btn-sm btn-gray-800 d-inline-flex align-items-center"
-                                            type="submit">Add
-                                    </button>
-                                </c:when>
-                                <c:otherwise>
-                                    <button class="btn btn-sm btn-gray-800 d-inline-flex align-items-center"
-                                            type="submit">Update
-                                    </button>
-                                </c:otherwise>
-                            </c:choose>
-                            <a href="/admin/home" class="fw-bold mx-2">Cancel</a>
+                            <button class="btn btn-sm btn-gray-800 d-inline-flex align-items-center"
+                                    type="submit">Update
+                            </button>
+                            <a href="/nurse/home" class="fw-bold mx-2">Cancel</a>
                         </div>
                     </form:form>
                 </div>
