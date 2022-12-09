@@ -3,6 +3,11 @@ package com.epatient.manage;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * EPatient starter class
+ * Author: Jane Aarthy, Maiara Karla
+ * Created on : 13/11/2022
+ */
 @SpringBootApplication
 public class EPatientApplication {
 
