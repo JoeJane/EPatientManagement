@@ -5,6 +5,11 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
 
+/**
+ * Nurse entity
+ * Author: Jane Aarthy, Maiara Karla
+ * Created on : 03/12/2022
+ */
 @Entity
 @Table(name = "nurse")
 public class Nurse extends User {

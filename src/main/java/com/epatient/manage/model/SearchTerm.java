@@ -1,5 +1,10 @@
 package com.epatient.manage.model;
 
+/**
+ * Search Term
+ * Author: Jane Aarthy,
+ * Created on : 03/12/2022
+ */
 public class SearchTerm {
     String value;
     String status;

@@ -21,6 +21,11 @@ import java.time.Period;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * This class handles all the Nurse related functionalities
+ * Author: Jane Aarthy, Maiara Karla
+ * Created on : 13/11/2022
+ */
 @Controller
 @RequestMapping("nurse")
 public class NurseController {
@@ -34,6 +39,12 @@ public class NurseController {
 	@Autowired
 	DiagnosisService diagnosisService;
 
+	/**
+	 * Home page for nurse user
+	 * @param model Model attribute, which is wired automatically by spring framework
+	 * @param principal Principal attribute, which is wired automatically by spring framework
+	 * @return nurse home page
+	 */
 	@GetMapping("/home")
 	public String nurseHome(Model model, Principal principal) {
 		List<User> users = userService.findByRole(Role.PATIENT);
@@ -41,7 +52,6 @@ public class NurseController {
 		users.forEach( user -> {
 			user.setAge(Period.between(user.getDateOfBirth(), curDate).getYears());
 		});
-
 
 		User currentUser  = (User)((UsernamePasswordAuthenticationToken) principal).getPrincipal();
 
@@ -52,8 +62,14 @@ public class NurseController {
 		return "/nurse/home";
 	}
 
+	/**
+	 * Search users based on @SearchTerm
+	 * @param model Model attribute, which is wired automatically by spring framework
+	 * @param searchTerm Search parameters which is passed by frontend
+	 * @return nurse home page with search result
+	 */
 	@PostMapping("/search")
-	public String search(Model model, @ModelAttribute("searchterm") SearchTerm searchTerm, Principal principal) {
+	public String search(Model model, @ModelAttribute("searchterm") SearchTerm searchTerm) {
 
 		List<User> users = userService.searchUsersForNurseRole(searchTerm.getValue(), searchTerm.getStatus());
 		LocalDate curDate = LocalDate.now();
@@ -67,6 +83,12 @@ public class NurseController {
 		return "/nurse/home";
 	}
 
+	/**
+	 * View Patient page based on user id
+	 * @param id Patient ID
+	 * @param model Model attribute, which is wired automatically by spring framework
+	 * @return User profile view page
+	 */
 	@GetMapping("/patient/view/{id}")
 	public String viewUser(@PathVariable("id") Integer id, Model model) {
 		User user = (User) userService.findById(id).get();
@@ -78,6 +100,12 @@ public class NurseController {
 		return "/nurse/viewForm";
 	}
 
+	/**
+	 * Handle request for view prescription
+	 * @param diagnosisID Diagnosis ID
+	 * @param model Model attribute, which is wired automatically by spring framework
+	 * @return Prescription view page
+	 */
 	@GetMapping("/patient/view-prescription/{diagnosisID}")
 	public String viewPatientPrescription(@PathVariable("diagnosisID") Integer diagnosisID, Model model) {
 
@@ -92,6 +120,12 @@ public class NurseController {
 		return "/nurse/viewPrescription";
 	}
 
+	/**
+	 * Nurse profile view page
+	 * @param model Model attribute, which is wired automatically by spring framework
+	 * @param principal Principal attribute, which is wired automatically by spring framework
+	 * @return Nurse profile view page
+	 */
 	@GetMapping("/profile")
 	public String viewProfile(Model model, Principal principal) {
 		User currentUser  = (User)((UsernamePasswordAuthenticationToken) principal).getPrincipal();
@@ -103,6 +137,12 @@ public class NurseController {
 		return "/nurse/viewProfile";
 	}
 
+	/**
+	 * Nurse profile edit page
+	 * @param model Model attribute, which is wired automatically by spring framework
+	 * @param principal Principal attribute, which is wired automatically by spring framework
+	 * @return Nurse profile edit page
+	 */
 	@GetMapping("/edit")
 	public String editUser(Model model, Principal principal) {
 		User currentUser  = (User)((UsernamePasswordAuthenticationToken) principal).getPrincipal();
@@ -114,9 +154,17 @@ public class NurseController {
 		return "/nurse/editProfile";
 	}
 
+	/**
+	 * Create or update nurse user
+	 * @param user User model
+	 * @param bindingResult Binding Result
+	 * @param model Model attribute, which is wired automatically by spring framework
+	 * @param redirectAttributes Redirect Attributes
+	 * @param principal Principal attribute, which is wired automatically by spring framework
+	 * @return Nurse profile view page
+	 */
 	@PostMapping("/save")
 	public String addUser(@ModelAttribute("userForm") @Valid User user, BindingResult bindingResult, Model model, final RedirectAttributes redirectAttributes, Principal principal) {
-
 		Nurse currentUser  = (Nurse)((UsernamePasswordAuthenticationToken) principal).getPrincipal();
 		Optional<User> optionalNurse = userService.findById(currentUser.getUserId());
 
@@ -158,6 +206,12 @@ public class NurseController {
 		return "redirect:/nurse/view/" + newUser.getUserId();
 	}
 
+	/**
+	 * Load nurse's rest password page
+	 * @param model Model attribute, which is wired automatically by spring framework
+	 * @param principal Principal attribute, which is wired automatically by spring framework
+	 * @return Nurse reset password page
+	 */
 	@GetMapping("/resetPassword")
 	public String resetPassword(Model model, Principal principal) {
 		User currentUser  = (User)((UsernamePasswordAuthenticationToken) principal).getPrincipal();
@@ -169,6 +223,14 @@ public class NurseController {
 		return "/nurse/resetPassword";
 	}
 
+	/**
+	 * Perform nurse's rest password
+	 * @param user User model
+	 * @param bindingResult Binding result
+	 * @param model Model attribute, which is wired automatically by spring framework
+	 * @param principal Principal attribute, which is wired automatically by spring framework
+	 * @return Nurse's home page
+	 */
 	@PostMapping("/resetPassword")
 	public String resetPassword(@ModelAttribute("userForm") User user, BindingResult bindingResult, Model model, Principal principal) {
 		if(user.getPassword() == null || user.getPassword().equals("")){
@@ -194,12 +256,20 @@ public class NurseController {
 		return "redirect:/nurse/home";
 	}
 
+	/**
+	 * Populate default values for checkbox and radios
+	 * @param model Model attribute, which is wired automatically by spring framework
+	 */
 	private void populateDefaultCheckBoxesAndRadios(Model model) {
 		model.addAttribute("provinces", getProvinces());
 		model.addAttribute("countries", getCountries());
 		model.addAttribute("nurseTypes", getNurseTypes());
 	}
 
+	/**
+	 * Load country list master data
+	 * @return map of country code and country name
+	 */
 	private static Map<String, String> getCountries(){
 		Map<String, String> countries = new TreeMap<>();
 		countries.put("CA", "Canada");
@@ -208,10 +278,18 @@ public class NurseController {
 		return countries;
 	}
 
+	/**
+	 * Load provinces master data
+	 * @return map of @Province master data
+	 */
 	private static Map<Province, String> getProvinces(){
 		return Arrays.stream(Province.values()).collect(Collectors.toMap(e->e, e->e.getValue(), (oldValue, newValue) -> oldValue, TreeMap::new));
 	}
 
+	/**
+	 * Load nurse types master data
+	 * @return map of @NurseType master data
+	 */
 	private static Map<NurseType, String> getNurseTypes(){
 		return Arrays.stream(NurseType.values()).collect(Collectors.toMap(e->e, e->e.getValue(), (oldValue, newValue) -> oldValue, TreeMap::new));
 	}

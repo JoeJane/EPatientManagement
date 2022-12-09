@@ -17,6 +17,11 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
 
+/**
+ * User entity
+ * Author: Jane Aarthy,
+ * Created on : 03/12/2022
+ */
 @Entity
 @Table(name = "users")
 @Inheritance(strategy=InheritanceType.JOINED)

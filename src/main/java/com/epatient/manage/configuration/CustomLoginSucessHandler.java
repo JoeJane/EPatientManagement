@@ -14,8 +14,21 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Login success handler class
+ * Author: Jane Aarthy
+ * Created on : 13/11/2022
+ */
 @Configuration
 public class CustomLoginSucessHandler extends SimpleUrlAuthenticationSuccessHandler {
+
+    /**
+     * Login handler
+     * @param request HttpServletRequest
+     * @param response HttpServletResponse
+     * @param authentication Authentication
+     * @throws IOException IO Exception
+     */
     @Override
     protected void handle(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
             throws IOException {
@@ -25,6 +38,11 @@ public class CustomLoginSucessHandler extends SimpleUrlAuthenticationSuccessHand
         redirectStrategy.sendRedirect(request, response, targetUrl);
     }
 
+    /**
+     * Determine target url
+     * @param authentication Authentication entity
+     * @return target url
+     */
     protected String determineTargetUrl(Authentication authentication){
         String url = "/login?error=true";
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();

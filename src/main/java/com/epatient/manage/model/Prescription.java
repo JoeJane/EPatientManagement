@@ -5,6 +5,11 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+/**
+ * Prescription entity
+ * Author: Jane Aarthy,
+ * Created on : 03/12/2022
+ */
 @Entity
 @Table(name = "prescription")
 public class Prescription {

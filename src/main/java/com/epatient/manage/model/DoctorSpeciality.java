@@ -1,5 +1,10 @@
 package com.epatient.manage.model;
 
+/**
+ * Doctor specialities
+ * Author: Maiara Karla
+ * Created on : 03/12/2022
+ */
 public enum DoctorSpeciality {
     ANESTHESIOLOGISTS("Anesthesiologists"),
     CARDIOLOGISTS("Cardiologists"),
