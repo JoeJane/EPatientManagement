@@ -8,6 +8,11 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Patient entity
+ * Author: Jane Aarthy,
+ * Created on : 03/12/2022
+ */
 @Entity
 @Table(name = "patient")
 public class Patient extends User {

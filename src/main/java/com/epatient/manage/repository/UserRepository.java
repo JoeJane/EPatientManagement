@@ -10,9 +10,12 @@ import java.util.List;
 import java.util.Optional;
 
 
+/**
+ * Repository for User entity
+ * Author: Jane Aarthy, Maiara Karla
+ * Created on : 13/11/2022
+ */
 public interface UserRepository extends JpaRepository<User, Integer> {
-
-    //public Optional<User> findByEmail(String email);
 
     @Query(value = "SELECT e FROM User as e WHERE (:inputString is null or e.lastName like %:inputString% " +
             "or e.firstName like %:inputString% or e.username like %:inputString% " +

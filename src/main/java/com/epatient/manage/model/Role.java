@@ -1,5 +1,10 @@
 package com.epatient.manage.model;
 
+/**
+ * Roles
+ * Author: Jane Aarthy,
+ * Created on : 03/12/2022
+ */
 public enum Role {
     ADMIN("Admin"),
     DOCTOR("Doctor"),

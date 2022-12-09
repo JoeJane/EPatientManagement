@@ -1,6 +1,5 @@
 package com.epatient.manage.service;
 
-import com.epatient.manage.model.Patient;
 import com.epatient.manage.model.Role;
 import com.epatient.manage.model.SearchTerm;
 import com.epatient.manage.model.User;
@@ -12,12 +11,16 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * Implementation for @UserService and @UserDetailsService entities
+ * Author: Jane Aarthy, Maiara Karla
+ * Created on : 13/11/2022
+ */
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
 
@@ -27,6 +30,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Autowired
     UserRepository userRepository;
 
+    /**
+     * Update multiple users
+     * @param ids User ids
+     * @param status Status
+     */
     @Override
     public void saveAllUser(List<Integer> ids, String status) {
         List<User> users = userRepository.findAllById(ids);
@@ -38,35 +46,69 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userRepository.saveAll(users);
     }
 
+    /**
+     * Find user based on username
+     * @param username Username
+     * @return User
+     */
     public Optional<User> findUserByUsername(String username){
         return userRepository.findUserByUsername(username);
     }
 
+    /**
+     * Get user based on username
+     * @param username Username
+     * @return UserDetails
+     * @throws UsernameNotFoundException Username not found exception
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return findUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException(String.format("USER_NOT_FOUND", username)));
     }
 
+    /**
+     * Load user based on ID
+     * @param id User id
+     * @return User
+     */
     @Override
     public Optional<User> findById(Integer id) {
         return userRepository.findById(id);
     }
 
+    /**
+     * Load all users
+     * @return list of users
+     */
     @Override
     public List<User> findAll() {
         return userRepository.findAll();
     }
 
+    /**
+     * Load user whose role is not passed parameter
+     * @param role User role
+     * @return List of users
+     */
     @Override
     public List<User> findByRoleNot(Role role) {
         return userRepository.findByRoleNot(role);
     }
 
+    /**
+     * Load user based on @Role
+     * @param role User role
+     * @return List of users
+     */
     @Override
     public List<User> findByRole(Role role){
         return userRepository.findByRole(role);
     }
 
+    /**
+     * Save or update user
+     * @param user User entity
+     */
     @Override
     public void saveOrUpdate(User user) {
         Integer userId = user.getUserId();
@@ -105,6 +147,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     }
 
+    /**
+     * Change user status
+     * @param id User ID
+     * @param status Status
+     */
     @Override
     public void changeStatusById(Integer id, boolean status) {
         User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found!"));
@@ -112,11 +159,22 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userRepository.save(user);
     }
 
+    /**
+     * Search nursee users
+     * @param term Search term
+     * @param status Status
+     * @return List of users
+     */
     public List<User> searchUsersForNurseRole(String term, String status) {
         List<Role> roles = List.of(Role.PATIENT);
         return search(term, status, roles);
     }
 
+    /**
+     * Search non-admin users
+     * @param searchTerm Search term
+     * @return List of users
+     */
     public List<User> searchUsersForAdminRole(SearchTerm searchTerm) {
         List<Role> roles = null;
         if(searchTerm.getRole() != null)
@@ -135,6 +193,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
     }
 
+    /**
+     * Update user password
+     * @param user User
+     */
     public void updatePassword(User user) {
         Optional<User> userOptional = findById(user.getUserId());
         String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());

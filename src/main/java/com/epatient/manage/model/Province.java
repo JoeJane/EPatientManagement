@@ -1,5 +1,10 @@
 package com.epatient.manage.model;
 
+/**
+ * Provinces
+ * Author: Maiara Karla
+ * Created on : 03/12/2022
+ */
 public enum Province {
 
     AB("Alberta"),

@@ -11,6 +11,11 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Global exception handler
+ * Author: Jane Aarthy, Maiara Karla
+ * Created on : 13/11/2022
+ */
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public static final String DEFAULT_ERROR_VIEW = "error";

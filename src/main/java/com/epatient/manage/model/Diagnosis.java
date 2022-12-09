@@ -6,6 +6,11 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Diagnosis entity
+ * Author: Jane Aarthy,
+ * Created on : 03/12/2022
+ */
 @Entity
 @Table(name = "diagnosis")
 public class Diagnosis {

@@ -1,9 +1,13 @@
 package com.epatient.manage.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
+/**
+ * Doctor entity
+ * Author: Jane Aarthy,
+ * Created on : 03/12/2022
+ */
 @Entity
 @Table(name = "doctor")
 public class Doctor extends User {

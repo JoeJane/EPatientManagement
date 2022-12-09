@@ -1,5 +1,10 @@
 package com.epatient.manage.model;
 
+/**
+ * Blood groups
+ * Author: Maiara Karla
+ * Created on : 03/12/2022
+ */
 public enum BloodGroup {
     A_POSITIVE("A+"),
     A_NEGATIVE("A-"),

@@ -22,10 +22,10 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
+ * This class handles all the Admin related functionalities
  * Author: Jane Aarthy
  * Created on : 13/11/2022
- * This class handles all the admin related functionality
- * ***/
+ */
 @Controller
 @RequestMapping("admin")
 public class AdminController {
@@ -33,23 +33,12 @@ public class AdminController {
 	@Autowired
 	UserService userService;
 
-	private User getTempUser(){
-		User newUser = new User();
-
-		newUser.setEmail("a@gmail.com");
-		newUser.setPassword("password");
-		newUser.setFirstName("Joe");
-		newUser.setAddress("68 Corporate Drive");
-		newUser.setAddressNo("123");
-		newUser.setCity("Scarborough");
-		newUser.setPostalCode("M1H3h3");
-		newUser.setProvince(Province.ON);
-		newUser.setCountry("CA");
-		newUser.setGender("MALE");
-		newUser.setPhoneNumber("12345678");
-		return newUser;
-	}
-
+	/**
+	 * Home page for admin user
+	 * @param model Model attribute, which is wired automatically by spring framework
+	 * @param principal Principal attribute, which is wired automatically by spring framework
+	 * @return admin home page
+	 */
 	@GetMapping("/home")
 	public String adminHome(Model model, Principal principal) {
 		List<User> users = userService.findByRoleNot(Role.ADMIN);
@@ -58,7 +47,6 @@ public class AdminController {
 			user.setAge(Period.between(user.getDateOfBirth(), curDate).getYears());
 		});
 		
-
 		User currentUser  = (User)((UsernamePasswordAuthenticationToken) principal).getPrincipal();
 
 		model.addAttribute("searchterm", new SearchTerm());
@@ -70,6 +58,12 @@ public class AdminController {
 		return "/admin/home";
 	}
 
+	/**
+	 * Search users based on @SearchTerm
+	 * @param model Model attribute, which is wired automatically by spring framework
+	 * @param searchTerm Search parameters which is passed by frontend
+	 * @return admin home page with search result
+	 */
 	@PostMapping("/search")
 	public String search(Model model, @ModelAttribute("searchterm") SearchTerm searchTerm) {
 
@@ -86,6 +80,12 @@ public class AdminController {
 		return "/admin/home";
 	}
 
+	/**
+	 * Perform bulk Activate/ Deactivate for multiple users
+	 * @param model Model attribute, which is wired automatically by spring framework
+	 * @param searchTerm Search parameters which is passed by frontend
+	 * @return admin home page with search result
+	 */
 	@PostMapping("/bulkAction")
 	public String bulkAction(Model model, @ModelAttribute("bulkAction") SearchTerm searchTerm) {
 
@@ -107,14 +107,24 @@ public class AdminController {
 		return "/admin/home";
 	}
 
+	/**
+	 * User registration page
+	 * @param model Model attribute, which is wired automatically by spring framework
+	 * @return User registration page to add
+	 */
 	@GetMapping("/add")
 	public String addUser(Model model) {
-		// model.addAttribute("userForm", new User());
-		model.addAttribute("userForm", getTempUser());
+		model.addAttribute("userForm", new User());
 		populateDefaultCheckBoxesAndRadios(model);
 		return "/admin/registerForm";
 	}
 
+	/**
+	 * User edit page based on userID
+	 * @param id Target User ID
+	 * @param model Model attribute, which is wired automatically by spring framework
+	 * @return User registration page to edit
+	 */
 	@GetMapping("/edit/{id}")
 	public String editUser(@PathVariable("id") Integer id, Model model) {
 		User user = userService.findById(id).orElse(new User());
@@ -125,6 +135,14 @@ public class AdminController {
 		return "/admin/registerForm";
 	}
 
+	/**
+	 * Create or update user
+	 * @param user User model
+	 * @param bindingResult Binding Result
+	 * @param model Model attribute, which is wired automatically by spring framework
+	 * @param redirectAttributes Redirect Attributes
+	 * @return User profile view page
+	 */
 	@PostMapping("/save")
 	public String addUser(@ModelAttribute("userForm") @Valid User user, BindingResult bindingResult, Model model, final RedirectAttributes redirectAttributes) {
 
@@ -178,6 +196,12 @@ public class AdminController {
 		return "redirect:/admin/view/" + newUser.getUserId();
 	}
 
+	/**
+	 * View user profile based on User ID
+	 * @param id Target User ID
+	 * @param model Model attribute, which is wired automatically by spring framework
+	 * @return User profile view page
+	 */
 	@GetMapping("/view/{id}")
 	public String viewUser(@PathVariable("id") Integer id, Model model) {
 		User user = userService.findById(id).orElse(new User());
@@ -187,29 +211,37 @@ public class AdminController {
 		return "/admin/viewForm";
 	}
 
+	/**
+	 * REST method to activate user based on User ID
+	 * @param id Target User ID
+	 * @return Return Success or Fail
+	 */
 	@GetMapping(value="/activate/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<Integer> activateUser(@PathVariable("id") Integer id) {
 		userService.changeStatusById(id, false);
 		return new ResponseEntity<>(id, HttpStatus.OK);
-
 	}
 
+	/**
+	 * Rest method to delete user based on User ID
+	 * @param id Target User ID
+	 * @return Return Success or Fail
+	 */
 	@GetMapping(value="/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<Integer> deleteUser(@PathVariable("id") Integer id) {
 		userService.changeStatusById(id, true);
 		return new ResponseEntity<>(id, HttpStatus.OK);
-
 	}
 
-	@GetMapping("/addUser1")
-	public String addUser1(Model model) {
-		model.addAttribute("userForm", new User());
-		populateDefaultCheckBoxesAndRadios(model);
-		return "/admin/addUser";
-	}
 
+	/**
+	 * Load rest user password page
+	 * @param id Target User ID
+	 * @param model Model attribute, which is wired automatically by spring framework
+	 * @return Return user reset password page
+	 */
 	@GetMapping("/user/resetPassword/{id}")
 	public String resetUserPassword(@PathVariable("id") Integer id, Model model) {
 		User user = userService.findById(id).get();
@@ -219,6 +251,14 @@ public class AdminController {
 		return "/admin/resetPassword";
 	}
 
+	/**
+	 * Perform user rest password
+	 * @param user User model
+	 * @param bindingResult Binding result
+	 * @param model Model attribute, which is wired automatically by spring framework
+	 * @param redirectAttributes Redirect attributes
+	 * @return Admin home page
+	 */
 	@PostMapping("/user/resetPassword")
 	public String resetUserPassword(@ModelAttribute("userForm") User user, BindingResult bindingResult, Model model, final RedirectAttributes redirectAttributes) {
 
@@ -240,6 +280,12 @@ public class AdminController {
 		return "redirect:/admin/home";
 	}
 
+	/**
+	 * Load admin's rest password page
+	 * @param model Model attribute, which is wired automatically by spring framework
+	 * @param principal Principal attribute, which is wired automatically by spring framework
+	 * @return Admin reset password page
+	 */
 	@GetMapping("/resetPassword")
 	public String resetAdminPassword(Model model, Principal principal) {
 		User currentUser  = (User)((UsernamePasswordAuthenticationToken) principal).getPrincipal();
@@ -251,6 +297,14 @@ public class AdminController {
 		return "/admin/resetAdminPassword";
 	}
 
+	/**
+	 * Perform admin's rest password
+	 * @param user User model
+	 * @param bindingResult Binding result
+	 * @param model Model attribute, which is wired automatically by spring framework
+	 * @param principal Principal attribute, which is wired automatically by spring framework
+	 * @return Admin's home page
+	 */
 	@PostMapping("/resetPassword")
 	public String resetAdminPassword(@ModelAttribute("userForm") User user, BindingResult bindingResult, Model model, Principal principal) {
 		if(user.getPassword() == null || user.getPassword().equals("")){
@@ -276,6 +330,10 @@ public class AdminController {
 		return "redirect:/admin/home";
 	}
 
+	/**
+	 * Populate default values for checkbox and radios
+	 * @param model Model attribute, which is wired automatically by spring framework
+	 */
 	private void populateDefaultCheckBoxesAndRadios(Model model) {
 		Map<Role, String > roles = getRoles();
 
@@ -287,6 +345,10 @@ public class AdminController {
 		model.addAttribute("doctorSpecialities", getDoctorSpecialities());
 	}
 
+	/**
+	 * Load country list master data
+	 * @return map of country code and country name
+	 */
 	private static Map<String, String> getCountries(){
 		Map<String, String> countries = new TreeMap<>();
 		countries.put("CA", "Canada");
@@ -295,24 +357,44 @@ public class AdminController {
 		return countries;
 	}
 
+	/**
+	 * Load roles master data
+	 * @return map of @Role and description
+	 */
 	private static Map<Role, String> getRoles(){
 		Map<Role, String> roles = Arrays.stream(Role.values()).collect(Collectors.toMap(e->e, e->e.getValue(), (oldValue, newValue) -> oldValue, TreeMap::new));
 		roles.remove(Role.ADMIN);
 		return roles;
 	}
 
+	/**
+	 * Load Blood groups master data
+	 * @return map of @BloodGroup master data
+	 */
 	private static Map<BloodGroup, String> getBloodGroups(){
 		return Arrays.stream(BloodGroup.values()).collect(Collectors.toMap(e->e, e->e.getValue(), (oldValue, newValue) -> oldValue, TreeMap::new));
 	}
 
+	/**
+	 * Load provinces master data
+	 * @return map of @Province master data
+	 */
 	private static Map<Province, String> getProvinces(){
 		return Arrays.stream(Province.values()).collect(Collectors.toMap(e->e, e->e.getValue(), (oldValue, newValue) -> oldValue, TreeMap::new));
 	}
 
+	/**
+	 * Load nurse types master data
+	 * @return map of @NurseType master data
+	 */
 	private static Map<NurseType, String> getNurseTypes(){
 		return Arrays.stream(NurseType.values()).collect(Collectors.toMap(e->e, e->e.getValue(), (oldValue, newValue) -> oldValue, TreeMap::new));
 	}
 
+	/**
+	 * Load doctor specialty types master data
+	 * @return map of @DoctorSpeciality master data
+	 */
 	private static Map<DoctorSpeciality, String> getDoctorSpecialities(){
 		return Arrays.stream(DoctorSpeciality.values()).collect(Collectors.toMap(e->e, e->e.getValue(), (oldValue, newValue) -> oldValue, TreeMap::new));
 	}

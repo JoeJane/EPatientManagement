@@ -7,6 +7,11 @@ import com.epatient.manage.model.User;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Service for UserService entity
+ * Author: Jane Aarthy, Maiara Karla
+ * Created on : 13/11/2022
+ */
 public interface UserService {
 
     public void saveAllUser(List<Integer> ids, String status);
