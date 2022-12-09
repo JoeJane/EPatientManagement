@@ -15,6 +15,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+/**
+ * Spring Security configuration
+ * Author: Jane Aarthy
+ * Created on : 13/11/2022
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {

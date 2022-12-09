@@ -11,17 +11,23 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 
 /**
+ * This class handles all the login related functionality
  * Author: Jane Aarthy
  * Created on : 04/11/2022
- * This class handles all the login related functionality
  ***/
-
 @Controller
 public class LoginController {
 
     @Autowired
     UserRepository userRepository;
 
+    /**
+     * Handle request for login page
+     * @param model Model attribute, which is wired automatically by spring framework
+     * @param error Error message
+     * @param logout Logout message
+     * @return Load login page
+     */
     @GetMapping("/login")
     public String login(Model model, String error, String logout) {
         if (error != null)
@@ -34,6 +40,12 @@ public class LoginController {
     }
 
 
+    /**
+     * Handle request for logout
+     * @param request HttpServletRequest
+     * @param redirectAttributes RedirectAttributes
+     * @return Redirect to login page
+     */
     @GetMapping("/logout")
     public String logout(HttpServletRequest request, RedirectAttributes redirectAttributes) {
         request.getSession().invalidate();
@@ -42,6 +54,13 @@ public class LoginController {
         return "redirect:/login";
     }
 
+    /**
+     * Validate user based on email and password
+     * @param email Email address
+     * @param password Password
+     * @param user User model
+     * @return Is valid user or not
+     */
     private boolean validateUser(String email, String password, User user) {
         boolean isValid = false;
         try {

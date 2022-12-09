@@ -1,5 +1,10 @@
 package com.epatient.manage.model;
 
+/**
+ * Nurse types
+ * Author: Maiara Karla
+ * Created on : 03/12/2022
+ */
 public enum NurseType {
     INTENSIVE_CARE_NURSE("Intensive Care Nurse"),
     MIDWIFE("Mid Wife"),
