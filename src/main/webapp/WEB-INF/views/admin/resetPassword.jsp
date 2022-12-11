@@ -9,7 +9,7 @@
                 <a href="/admin/home" class="d-flex align-items-center justify-content-center">
                     <i class="fa-solid fa-arrow-left-long"></i>&nbsp; Back</a>
             </p>
-            <form:form method="post" action="/admin/resetPassword" modelAttribute="userForm">
+            <form:form method="post" action="/admin/user/resetPassword" modelAttribute="userForm">
                 <form:hidden path="userId"/>
                 <div class="col-12 d-flex align-items-center justify-content-center">
                     <div class="bg-white shadow border-0 rounded p-4 p-lg-5 w-100 fmxw-500">

@@ -393,10 +393,10 @@
                         </div>
 
                         <div class="mt-3 float-end">
+                            <a href="/nurse/home" class="fw-bold mx-2">Cancel</a>
                             <button class="btn btn-sm btn-gray-800 d-inline-flex align-items-center"
                                     type="submit">Update
                             </button>
-                            <a href="/nurse/home" class="fw-bold mx-2">Cancel</a>
                         </div>
                     </form:form>
                 </div>

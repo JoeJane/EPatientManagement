@@ -142,7 +142,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             userTemp.setProvince(user.getProvince());
             userTemp.setPostalCode(user.getPostalCode());
             userTemp.setCountry(user.getCountry());
-            userTemp.setPassword(encodedPassword);
 
             userRepository.save(userTemp);
         } else {

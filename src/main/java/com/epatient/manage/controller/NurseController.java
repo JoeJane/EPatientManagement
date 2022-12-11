@@ -199,11 +199,9 @@ public class NurseController {
 		redirectAttributes.addFlashAttribute("alert", "success");
 		redirectAttributes.addFlashAttribute("msg", "User updated successfully!");
 
-		user.setRole(Role.NURSE);
-		User newUser = Converter.convert(user);
-		userService.saveOrUpdate(newUser);
+		userService.saveOrUpdate(nurseUser);
 
-		return "redirect:/nurse/view/" + newUser.getUserId();
+		return "redirect:/nurse/profile";
 	}
 
 	/**
