@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 /**
  * This class handles all the Admin related functionalities
- * Author: Jane Aarthy
+ * Author: Jane Aarthy, Maiara Karla
  * Created on : 13/11/2022
  */
 @Controller

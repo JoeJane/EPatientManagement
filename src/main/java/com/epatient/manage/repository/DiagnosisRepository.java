@@ -7,7 +7,7 @@ import java.util.Optional;
 
 /**
  * Repository for Diagnosis entity
- * Author: Jane Aarthy
+ * Author: Jane Aarthy, Maiara Karla
  * Created on : 13/11/2022
  */
 public interface DiagnosisRepository extends JpaRepository<Diagnosis, Integer> {

@@ -39,7 +39,6 @@ public class LoginController {
         return "login";
     }
 
-
     /**
      * Handle request for logout
      * @param request HttpServletRequest
@@ -53,25 +52,4 @@ public class LoginController {
 
         return "redirect:/login";
     }
-
-    /**
-     * Validate user based on email and password
-     * @param email Email address
-     * @param password Password
-     * @param user User model
-     * @return Is valid user or not
-     */
-    private boolean validateUser(String email, String password, User user) {
-        boolean isValid = false;
-        try {
-            if (user.getPassword().equals(password)) {
-                isValid = true;
-            }
-        } catch (Exception ex) {
-            isValid = false;
-        }
-        return isValid;
-    }
-
-
 }

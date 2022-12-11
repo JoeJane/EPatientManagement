@@ -15,5 +15,4 @@ public class EPatientApplication {
 		SpringApplication.run(EPatientApplication.class, args);
 		System.out.println("E-Patient Application is Started Succesfully");
 	}
-
 }

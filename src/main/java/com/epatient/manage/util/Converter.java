@@ -66,7 +66,7 @@ public class Converter {
     /**
      * Convert @User into @Doctor
      * @param user @User entity
-     * @param doctor @Doctor entity
+     * @param labAssistant @LabAssistant entity
      * @return @Doctor entity
      */
     private static LabAssistant convertToLabAssistant(User user, LabAssistant labAssistant){

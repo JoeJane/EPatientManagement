@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * Diagnosis entity
- * Author: Jane Aarthy,
+ * Author: Jane Aarthy
  * Created on : 03/12/2022
  */
 @Entity
@@ -35,6 +35,13 @@ public class Diagnosis {
 
     @OneToMany(mappedBy = "diagnosis", cascade = CascadeType.ALL)
     List<Prescription> prescriptions;
+
+    public Diagnosis(){}
+
+    public Diagnosis(Integer id, String name){
+        this.id = id;
+        this.name = name;
+    }
 
     public Integer getId() {
         return id;

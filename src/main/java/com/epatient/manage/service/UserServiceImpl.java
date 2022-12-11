@@ -25,25 +25,19 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Autowired
-    BCryptPasswordEncoder bCryptPasswordEncoder;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     /**
-     * Update multiple users
-     * @param ids User ids
-     * @param status Status
+     * Load user based on ID
+     * @param id User id
+     * @return User
      */
     @Override
-    public void saveAllUser(List<Integer> ids, String status) {
-        List<User> users = userRepository.findAllById(ids);
-        boolean isDeleted = status.equals("1") ? false : true;
-        users.forEach(user -> {
-            user.setDeleted(isDeleted);
-        });
-
-        userRepository.saveAll(users);
+    public Optional<User> findById(Integer id) {
+        return userRepository.findById(id);
     }
 
     /**
@@ -56,24 +50,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     /**
-     * Get user based on username
-     * @param username Username
-     * @return UserDetails
-     * @throws UsernameNotFoundException Username not found exception
+     * Search nursee users
+     * @param term Search term
+     * @param status Status
+     * @return List of users
      */
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return findUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException(String.format("USER_NOT_FOUND", username)));
-    }
-
-    /**
-     * Load user based on ID
-     * @param id User id
-     * @return User
-     */
-    @Override
-    public Optional<User> findById(Integer id) {
-        return userRepository.findById(id);
+    public List<User> searchUsersForNurseRole(String term, String status) {
+        List<Role> roles = List.of(Role.PATIENT);
+        return search(term, status, roles);
     }
 
     /**
@@ -106,6 +90,33 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     /**
+     * Update multiple users
+     * @param ids User ids
+     * @param status Status
+     */
+    @Override
+    public void saveAllUser(List<Integer> ids, String status) {
+        List<User> users = userRepository.findAllById(ids);
+        boolean isDeleted = status.equals("1") ? false : true;
+        users.forEach(user -> {
+            user.setDeleted(isDeleted);
+        });
+
+        userRepository.saveAll(users);
+    }
+
+    /**
+     * Get user based on username
+     * @param username Username
+     * @return UserDetails
+     * @throws UsernameNotFoundException Username not found exception
+     */
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return findUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException(String.format("USER_NOT_FOUND", username)));
+    }
+
+    /**
      * Save or update user
      * @param user User entity
      */
@@ -121,10 +132,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
             userTemp.setFirstName(user.getFirstName());
             userTemp.setLastName(user.getLastName());
-            // userTemp.setRole(user.getRole());
             userTemp.setDateOfBirth(user.getDateOfBirth());
             userTemp.setGender(user.getGender());
-            // userTemp.setBloodGroup(user.getBloodGroup());
             userTemp.setEmail(user.getEmail());
             userTemp.setPhoneNumber(user.getPhoneNumber());
             userTemp.setAddress(user.getAddress());
@@ -133,10 +142,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             userTemp.setProvince(user.getProvince());
             userTemp.setPostalCode(user.getPostalCode());
             userTemp.setCountry(user.getCountry());
-            /*userTemp.setEmergencyFirstName(user.getEmergencyFirstName());
-            userTemp.setEmergencyLastName(user.getEmergencyLastName());
-            userTemp.setEmergencyEmail(user.getEmergencyEmail());
-            userTemp.setEmergencyPhone(user.getEmergencyPhone());*/
             userTemp.setPassword(encodedPassword);
 
             userRepository.save(userTemp);
@@ -159,16 +164,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userRepository.save(user);
     }
 
-    /**
-     * Search nursee users
-     * @param term Search term
-     * @param status Status
-     * @return List of users
-     */
-    public List<User> searchUsersForNurseRole(String term, String status) {
-        List<Role> roles = List.of(Role.PATIENT);
-        return search(term, status, roles);
-    }
+
 
     /**
      * Search non-admin users
@@ -205,6 +201,4 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         tempUser.setPassword(encodedPassword);
         userRepository.save(tempUser);
     }
-
-
 }

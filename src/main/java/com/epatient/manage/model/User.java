@@ -26,7 +26,6 @@ import java.util.Collections;
 @Table(name = "users")
 @Inheritance(strategy=InheritanceType.JOINED)
 public class User <T> implements UserDetails {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "userid")
@@ -113,6 +112,15 @@ public class User <T> implements UserDetails {
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
     private Role role;
+
+    public User(){}
+
+    public User(Integer id, String username, String password, Role role){
+        this.userId = id;
+        this.username = username;
+        this.password = password;
+        this.role = role;
+    }
 
     @Transient
     private DoctorSpeciality speciality;
