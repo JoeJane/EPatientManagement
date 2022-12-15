@@ -9,4 +9,6 @@ import com.epatient.manage.model.Diagnosis;
  */
 public interface DiagnosisService {
     public Diagnosis findById(Integer id);
+
+    void editDiagnoses(Integer patientId, Diagnosis diagnosis);
 }
